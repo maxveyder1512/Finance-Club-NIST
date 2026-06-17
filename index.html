@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIST Future Financiers — Basic Financial Literacy for Students</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Learn basic financial literacy, read market commentaries, and participate in stock market simulators with the NIST Future Financiers.">
+
+  <!-- Google Fonts: PT Serif (elegant serif — site-wide) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Toast Notification System Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#home" class="logo">
+        <img src="logo.png" alt="NIST Future Financiers" class="nav-logo">
+        <span>NIST</span> Future Financiers <div class="logo-badge">Literacy</div>
+      </a>
+      <nav>
+        <ul id="auth-nav-links">
+          <!-- Dynamic navigation items from app.js -->
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <div class="status-badge-container">
+          <!-- Dynamic Live/Demo badge -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container (no container class — hero needs full bleed) -->
+  <main>
+
+    <!-- VIEW 1: LANDING PAGE (#home) -->
+    <section id="home-view" class="view active">
+
+      <!-- Full-bleed House Green hero band -->
+      <div class="hero-section">
+        <div class="container">
+          <span class="hero-badge">🎓 NIST Secondary School Student Club</span>
+          <h1 class="hero-title">Master Your Money.<br><span>Own Your Future.</span></h1>
+          <p class="hero-mission">
+            Empowering the next generation of NIST students with core financial skills, investment literacy, and market awareness.
+          </p>
+          <div class="hero-actions">
+            <a href="#login" class="btn btn-primary">Join the Club</a>
+            <a href="#lessons" class="btn btn-secondary">Explore Lessons</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warm cream canvas — features & latest posts -->
+      <div class="home-body">
+        <div class="container">
+          <h2 class="section-header center">What We Do</h2>
+          <div class="features-grid">
+            <div class="card feat-card">
+              <div class="feat-icon feat-icon--img"><img src="whatwedo-1.png" alt="" class="feature-icon-img"></div>
+              <h3>Basic Financial Literacy</h3>
+              <p>Learn budget formatting, compound interest rates, debt management, and financial planning through interactive modules.</p>
+            </div>
+            <div class="card feat-card">
+              <div class="feat-icon feat-icon--img"><img src="whatwedo-2.png" alt="" class="feature-icon-img"></div>
+              <h3>Market Commentary</h3>
+              <p>Read real-world economic updates on interest rates, inflation, index funds, and global stock market trends.</p>
+            </div>
+            <div class="card feat-card">
+              <div class="feat-icon feat-icon--img"><img src="whatwedo-3.png" alt="" class="feature-icon-img"></div>
+              <h3>Simulated Investing</h3>
+              <p>Test your trading strategies in our paper trading arena with virtual USD mock capital portfolios.</p>
+            </div>
+          </div>
+
+          <!-- Club in action — photo feature (image left, text right) -->
+          <div class="photo-feature-row">
+            <figure class="section-photo-wrap">
+              <img src="club-photo-1.png" alt="NIST Future Financiers students presenting 'A Day in the Life of a Fund' alongside their teacher during a club session" class="section-photo" loading="lazy">
+            </figure>
+            <div class="photo-feature-text">
+              <h3 class="photo-feature-heading">Learning by Doing</h3>
+              <p>Our members run real, student-led sessions. Here the team presents “A Day in the Life of a Fund,” breaking down how professional investors research markets, weigh risk, and manage a portfolio.</p>
+            </div>
+          </div>
+
+          <div class="section-block">
+            <!-- Club in action — photo feature (image right, text left) -->
+            <div class="photo-feature-row reverse">
+              <figure class="section-photo-wrap">
+                <img src="club-photo-2.png" alt="A teacher leading a discussion with NIST Future Financiers students during a club meeting" class="section-photo" loading="lazy">
+              </figure>
+              <div class="photo-feature-text">
+                <h3 class="photo-feature-heading">Guided by Mentors</h3>
+                <p>From market commentary to hands-on workshops, our lessons are shaped alongside teachers and advisors who help students connect financial theory to the real economy.</p>
+              </div>
+            </div>
+
+            <h2 class="section-header">Latest News</h2>
+
+            <div id="featured-posts-grid" class="blog-grid">
+              <!-- Dynamically populated from app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: LOGIN / REGISTER (#login) -->
+    <section id="login-view" class="view">
+      <div class="container view-body">
+
+        <div class="auth-container card">
+          <img src="logo.png" alt="NIST Future Financiers" class="auth-logo">
+          <div class="auth-tabs">
+            <div id="tab-login" class="auth-tab active">Sign In</div>
+            <div id="tab-signup" class="auth-tab">Register</div>
+          </div>
+
+          <h2 id="auth-title" class="auth-form-title">Welcome Back</h2>
+
+          <form id="auth-form">
+            <div id="auth-name-group" class="form-group" style="display: none;">
+              <label for="auth-name">Full Name</label>
+              <input type="text" id="auth-name" class="form-control" placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+              <label for="auth-email">School Email</label>
+              <input type="email" id="auth-email" class="form-control" required placeholder="name@nist.ac.th">
+            </div>
+
+            <div class="form-group">
+              <label for="auth-password">Password</label>
+              <input type="password" id="auth-password" class="form-control" required placeholder="••••••••">
+            </div>
+
+            <div id="auth-admin-signin-group" class="form-group">
+              <div class="checkbox-group">
+                <input type="checkbox" id="auth-admin-toggle">
+                <label for="auth-admin-toggle">Sign in as admin</label>
+              </div>
+            </div>
+
+            <div id="auth-admin-code-group" class="form-group" style="display: none; margin-top: 10px;">
+              <label for="auth-admin-code">Admin Access Code</label>
+              <input type="password" id="auth-admin-code" class="form-control" placeholder="Enter admin access code">
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+                Enter the admin access code to sign in with administrator privileges.
+              </small>
+            </div>
+
+            <button type="submit" id="auth-submit-btn" class="btn btn-primary auth-submit-btn">Sign In</button>
+          </form>
+        </div>
+
+        <!-- Config panel for Supabase URL / Key -->
+        <div class="auth-container card setup-panel">
+          <h3>⚙️ Supabase Integration (Optional)</h3>
+          <p>By default, this site runs in a fully functional <strong>Local Demo Mode</strong> sandbox. To connect to a live Supabase DB, input your credentials below:</p>
+
+          <div class="form-group">
+            <label for="setup-url">Supabase Project URL</label>
+            <input type="text" id="setup-url" class="form-control" placeholder="https://your-project.supabase.co">
+          </div>
+
+          <div class="form-group">
+            <label for="setup-key">Supabase Anon Key</label>
+            <input type="password" id="setup-key" class="form-control" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+          </div>
+
+          <button id="btn-save-credentials" class="btn btn-secondary btn-sm" style="width: 100%;">Connect Live Backend</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 3: PROFILE / DASHBOARD (#profile) -->
+    <section id="profile-view" class="view">
+      <div class="container view-body">
+        <div class="profile-grid">
+          <!-- Profile summary card -->
+          <div id="profile-details-card" class="card profile-card">
+            <!-- Populated from app.js -->
+          </div>
+
+          <!-- Dashboard panel contents (Student/Admin toggled) -->
+          <div id="dashboard-content-area" class="dashboard-content">
+            <!-- Populated from app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: BLOG LIST (#blog) — Articles & Market Updates -->
+    <section id="blog-view" class="view">
+      <div class="container view-body">
+        <div class="blog-controls">
+          <div class="blog-filters">
+            <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+            <button class="filter-btn" onclick="filterCategory('blog', this)">Articles</button>
+            <button class="filter-btn" onclick="filterCategory('commentary', this)">Market Updates</button>
+          </div>
+          <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="blog-search" class="search-input" placeholder="Search title or author...">
+          </div>
+        </div>
+
+        <div id="posts-grid" class="blog-grid">
+          <!-- Dynamically populated from app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4b: LESSONS LIST (#lessons) — Financial Literacy Lessons only -->
+    <section id="lessons-view" class="view">
+      <div class="container view-body">
+        <div class="lessons-page-header">
+          <h2 class="section-header center">Lessons</h2>
+          <p class="lessons-subtitle">Build your financial foundation with our student-led literacy modules.</p>
+        </div>
+        <div class="blog-controls">
+          <div class="blog-filters">
+            <button class="filter-btn active">All Lessons</button>
+          </div>
+          <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="lessons-search" class="search-input" placeholder="Search lessons or author...">
+          </div>
+        </div>
+
+        <div id="lessons-grid" class="blog-grid">
+          <!-- Dynamically populated from app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: CLUB POSITIONS / LEADERSHIP (#positions) -->
+    <section id="positions-view" class="view">
+      <div class="container view-body">
+        <div class="positions-page-header">
+          <h2 class="section-header center">Club Leadership</h2>
+          <p class="positions-subtitle">Meet the students steering the NIST Future Financiers.</p>
+        </div>
+        <div id="positions-grid" class="positions-grid">
+          <!-- Dynamically populated from app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: ABOUT US (#about) — Public founders & mission page -->
+    <section id="about-view" class="view">
+
+      <!-- Full-bleed founders parallax banner with overlaid heading -->
+      <div class="about-banner" role="img" aria-label="Max Veyder and Oscar De Pins, co-founders of NIST Future Financiers, presenting during a club session">
+        <div class="about-banner-overlay">
+          <span class="about-eyebrow">🎓 Our Story</span>
+          <h1 class="about-title">About Us</h1>
+          <p class="about-subtitle">Meet the founders of NIST Future Financiers.</p>
+        </div>
+      </div>
+
+      <div class="container view-body">
+        <div class="about-page">
+
+          <!-- Founders intro / hero block -->
+          <div class="about-founders">
+            <article class="founder-bio-card">
+              <div class="founder-avatar founder-avatar--photo"><img src="founder-max.png" alt="Max Veyder" class="founder-avatar-img"></div>
+              <h3 class="founder-name">Max Veyder</h3>
+              <span class="founder-role">Founder</span>
+              <p class="founder-blurb">A student passionate about finance, investing, and entrepreneurship, dedicated to making financial literacy accessible for every student.</p>
+            </article>
+            <article class="founder-bio-card">
+              <div class="founder-avatar founder-avatar--photo"><img src="founder-oscar.png" alt="Oscar De Pins" class="founder-avatar-img"></div>
+              <h3 class="founder-name">Oscar De Pins</h3>
+              <span class="founder-role">Founder</span>
+              <p class="founder-blurb">A student driven by a strong interest in finance and business, committed to bridging the gap between the classroom and the real financial world.</p>
+            </article>
+          </div>
+
+          <!-- Mission / story content -->
+          <div class="about-content">
+            <section class="about-section">
+              <h2 class="about-section-title">Who We Are</h2>
+              <p>We are Max Veyder and Oscar de Pins, two students passionate about finance, investing, and entrepreneurship.</p>
+            </section>
+
+            <section class="about-section">
+              <h2 class="about-section-title">Why We Started</h2>
+              <p>We founded our Finance Club because we believe financial literacy is one of the most important life skills a person can develop, yet it is rarely taught in schools. From budgeting and saving to understanding taxes, investing, and financial markets, these are skills that can have a lasting impact on future success.</p>
+            </section>
+
+            <section class="about-section">
+              <h2 class="about-section-title">Our Mission</h2>
+              <p>Our mission is to teach financial literacy to younger students in an engaging, accessible, and practical way. We want to help students build confidence in managing money, understand how the financial world works, and develop habits that will benefit them throughout their lives.</p>
+            </section>
+
+            <section class="about-section">
+              <h2 class="about-section-title">How We Teach</h2>
+              <p>Through interactive lessons, discussions, quizzes, and real-world examples, we make complex financial concepts easy to understand. Whether students are learning about personal finance for the first time or are already interested in economics and investing, our goal is to create an environment where everyone can learn, ask questions, and grow.</p>
+            </section>
+
+            <section class="about-section">
+              <h2 class="about-section-title">Our Vision</h2>
+              <p>As founders, Max and Oscar share a strong interest in finance and business. We created this club to bridge the gap between what students learn in the classroom and the financial knowledge they will need in the real world.</p>
+              <p>We believe that financial education should start early, and we are committed to helping the next generation make smarter financial decisions and build a stronger future.</p>
+            </section>
+          </div>
+
+          <!-- Call to action -->
+          <div class="about-cta">
+            <h2 class="about-cta-title">Ready to start your financial journey?</h2>
+            <p class="about-cta-text">Join NIST Future Financiers and build the money skills that last a lifetime.</p>
+            <div class="about-cta-actions">
+              <a href="#login" class="btn btn-primary">Join the Club</a>
+              <a href="#positions" class="btn btn-secondary">Meet the Team</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: SINGLE POST DETAIL (#post/:id) -->
+    <section id="post-detail-view" class="view">
+      <div class="container view-body">
+        <div id="post-detail-container" class="post-detail-container">
+          <!-- Dynamically populated from app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 6: ADMIN CREATE/EDIT POST (#admin-editor) -->
+    <section id="editor-view" class="view">
+      <div class="container view-body">
+        <div class="editor-container card">
+          <h2 id="editor-view-title" class="editor-title">Create New Content</h2>
+
+          <form id="editor-form">
+            <div class="form-group">
+              <label for="editor-title-field">Article / Lesson Title</label>
+              <input type="text" id="editor-title-field" class="form-control" placeholder="e.g. Budgeting 101" required>
+            </div>
+
+            <div class="editor-form-row">
+              <div class="form-group">
+                <label for="editor-author-field">Author Name</label>
+                <input type="text" id="editor-author-field" class="form-control" placeholder="Enter author name" required>
+              </div>
+
+              <div class="form-group">
+                <label for="editor-type-field">Content Category</label>
+                <select id="editor-type-field" class="form-control">
+                  <option value="lesson">Lesson (Financial Literacy)</option>
+                  <option value="blog">Blog / Article</option>
+                  <option value="commentary">Market Commentary</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editor-body-field">Body Content (HTML allowed)</label>
+              <textarea id="editor-body-field" class="form-control" rows="12" placeholder="Write full article here..." required></textarea>
+              <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">
+                You can write formatting tags such as &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, and &lt;strong&gt; to style your text.
+              </small>
+            </div>
+
+            <div class="form-group checkbox-group" style="margin-top: 15px;">
+              <input type="checkbox" id="editor-publish-field" checked>
+              <label for="editor-publish-field">Publish immediately (visible on Blog grid)</label>
+            </div>
+
+            <div class="editor-actions">
+              <a href="#profile" class="btn btn-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">Save Content</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 7: STUDENT TESTS (#tests) -->
+    <section id="tests-view" class="view"><!-- populated by app.js --></section>
+
+    <!-- VIEW 8: ADMIN TESTS PANEL (#admin-tests) -->
+    <section id="admin-tests-view" class="view"><!-- populated by app.js --></section>
+
+    <!-- VIEW 9: ADMIN TEST EDITOR (#admin-test-editor / #admin-test-editor/:id) -->
+    <section id="admin-test-editor-view" class="view"><!-- populated by app.js --></section>
+
+  </main>
+
+  <!-- Assignment Modal Overlay (Admin directory content assignment) -->
+  <div id="assignment-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Assign Content to <span id="modal-student-name" style="color: var(--sbux-accent);">Student</span></h3>
+        <button class="modal-close" onclick="closeAssignmentModal()">&times;</button>
+      </div>
+      <p class="text-muted" style="font-size:0.85rem; margin-bottom:15px;">Select which published modules this student should read. These will show on their dashboard profile.</p>
+      <div id="assignment-list-container" class="modal-body">
+        <!-- Populated from app.js -->
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <button class="btn btn-secondary btn-sm" onclick="closeAssignmentModal()">Cancel</button>
+        <button id="btn-save-assignments" class="btn btn-primary btn-sm">Save Assignments</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign-In Gate Modal (prompts logged-out users to sign in to view lessons) -->
+  <div id="signin-gate-modal" class="modal" onclick="if (event.target === this) closeSignInGateModal()">
+    <div class="modal-content signin-gate-content">
+      <div class="modal-header">
+        <h3>Sign in to view lessons</h3>
+        <button class="modal-close" onclick="closeSignInGateModal()">&times;</button>
+      </div>
+      <p class="text-muted" style="font-size:0.95rem; line-height:1.6; margin-bottom:var(--space-4);">
+        Our financial literacy lessons are reserved for NIST Future Financiers members. Sign in to unlock and read the full lesson.
+      </p>
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeSignInGateModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="goToSignInFromGate()">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <!-- LEFT: Logo + Founders -->
+        <div class="footer-left">
+          <img src="logo.png" alt="NIST Future Financiers" class="footer-logo">
+          <p class="footer-club-name">NIST Future Financiers</p>
+          <p class="footer-founders-label">Founded by</p>
+          <p class="footer-founders">Max Veyder &amp; Oscar De Pins</p>
+          <p class="footer-school">NIST International School, Bangkok</p>
+        </div>
+
+        <!-- RIGHT: Social Links -->
+        <div class="footer-right">
+          <p class="footer-social-label">Follow Us</p>
+          <div class="footer-social-links">
+            <a href="https://www.instagram.com/nistfuturefinanciers?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram" data-tooltip="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              <span class="social-tooltip">Instagram</span>
+            </a>
+            <a href="https://www.tiktok.com/@future_financiers?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="TikTok" data-tooltip="TikTok">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
+              </svg>
+              <span class="social-tooltip">TikTok</span>
+            </a>
+          </div>
+          <p class="footer-copyright">&copy; 2026 NIST Future Financiers. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Supabase CDN Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Application Scripts -->
+  <script src="supabase.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -254,6 +254,13 @@ const INITIAL_MOCK_POSITIONS = [
   { id: "p4", title: "Events Coordinator", holder: "TBA", public: false, lockable: true, locked: true, order: 5 }
 ];
 
+// Hardcoded live Supabase credentials. The anon key is a public client key
+// (safe to expose in frontend code and to commit — access is protected by RLS).
+// These act as defaults; any credentials saved via the on-page Supabase panel
+// (LocalStorage) take precedence so the site can still be re-pointed at runtime.
+const SUPABASE_URL = "https://oxzccemwszcshqusrmti.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94emNjZW13c3pjc2hxdXNybXRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0Nzk5ODYsImV4cCI6MjA5NzA1NTk4Nn0.XP6e261N8ivCYHjXe8xPTsQv-Iw2m82RuwF35aFlUyg";
+
 // Helper to handle client-side database layer
 class SupabaseService {
   constructor() {
@@ -264,8 +271,8 @@ class SupabaseService {
 
   // Initialize service
   init() {
-    const url = localStorage.getItem("nist_supabase_url");
-    const key = localStorage.getItem("nist_supabase_key");
+    const url = localStorage.getItem("nist_supabase_url") || SUPABASE_URL;
+    const key = localStorage.getItem("nist_supabase_key") || SUPABASE_ANON_KEY;
 
     if (url && key && window.supabase) {
       try {

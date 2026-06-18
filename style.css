@@ -1130,30 +1130,6 @@ textarea.form-control {
   line-height: 1.65;
 }
 
-/* Status badges — full-pill ceremony (Rewards analogue) */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.status-live {
-  background: rgba(0, 117, 74, 0.10);
-  color: var(--sbux-accent);
-  border: 1px solid var(--border-tier1);
-}
-
-.status-demo {
-  background: var(--warning-subtle);
-  color: #7a5c1e;
-  border: 1px solid var(--border-tier4);
-}
-
 /* app.js uses .connection-status.live / .demo */
 .connection-status {
   display: inline-flex;

@@ -55,7 +55,6 @@ async function handleRouting() {
   // Verify auth state for page access
   currentUser = await window.db.getCurrentUser();
   updateNavbar();
-  updateConnectionStatusBadge();
 
   // Route handlers
   if (hash === "#home" || hash === "") {
@@ -158,20 +157,6 @@ function showView(viewId) {
 // Navigational helper
 function navigate(hash) {
   window.location.hash = hash;
-}
-
-// Update Supabase Connection Status Badge
-function updateConnectionStatusBadge() {
-  const badges = document.querySelectorAll(".status-badge-container");
-  const isDemo = window.db.isDemoMode;
-  
-  const html = isDemo
-    ? `<span class="status-badge status-demo">⚠️ Demo Mode</span>`
-    : `<span class="status-badge status-live">Supabase Live</span>`;
-
-  badges.forEach(b => {
-    b.innerHTML = html;
-  });
 }
 
 // Dynamic Navigation Header setup
@@ -1114,7 +1099,6 @@ document.getElementById("btn-save-credentials")?.addEventListener("click", () =>
       showToast("Credentials saved but initialization failed. Running in Demo Mode.", "error");
     }
   }
-  updateConnectionStatusBadge();
   updateNavbar();
   handleRouting(); // Reload content
 });
@@ -1225,7 +1209,6 @@ document.getElementById("auth-admin-toggle")?.addEventListener("change", (e) => 
 window.addEventListener("hashchange", handleRouting);
 
 window.addEventListener("DOMContentLoaded", () => {
-  updateConnectionStatusBadge();
   loadSettingsInputs();
   handleRouting();
 });

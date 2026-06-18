@@ -1082,39 +1082,6 @@ document.getElementById("editor-form")?.addEventListener("submit", async (e) => 
   }
 });
 
-// Setup Settings credentials panel
-document.getElementById("btn-save-credentials")?.addEventListener("click", () => {
-  const url = document.getElementById("setup-url").value.trim();
-  const key = document.getElementById("setup-key").value.trim();
-
-  if (!url || !key) {
-    // Revert to Demo Mode
-    window.db.setCredentials(null, null);
-    showToast("Reverted to local Demo Mode fallback.", "warning");
-  } else {
-    const connected = window.db.setCredentials(url, key);
-    if (connected) {
-      showToast("Connected to live Supabase backend!", "success");
-    } else {
-      showToast("Credentials saved but initialization failed. Running in Demo Mode.", "error");
-    }
-  }
-  updateNavbar();
-  handleRouting(); // Reload content
-});
-
-// Initialize form settings inputs
-function loadSettingsInputs() {
-  const creds = window.db.getCredentials();
-  const urlInput = document.getElementById("setup-url");
-  const keyInput = document.getElementById("setup-key");
-  
-  if (urlInput && keyInput) {
-    urlInput.value = creds.url;
-    keyInput.value = creds.key;
-  }
-}
-
 // AUTHENTICATION FORMS SUBMISSIONS
 document.getElementById("auth-form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -1209,7 +1176,6 @@ document.getElementById("auth-admin-toggle")?.addEventListener("change", (e) => 
 window.addEventListener("hashchange", handleRouting);
 
 window.addEventListener("DOMContentLoaded", () => {
-  loadSettingsInputs();
   handleRouting();
 });
 

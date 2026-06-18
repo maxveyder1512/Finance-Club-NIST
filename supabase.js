@@ -452,16 +452,44 @@ class SupabaseService {
         password
       });
 
-      // Keep the live backend coherent: the admin access code is the gate, so
-      // promote the signed-in user's profile to admin when it was supplied.
-      if (!error && asAdmin && data?.user) {
-        try {
-          await this.client
-            .from("profiles")
-            .update({ role: "admin" })
-            .eq("id", data.user.id);
-        } catch (err) {
-          console.error("Failed to elevate profile to admin:", err);
+      if (!error && data?.user) {
+        if (asAdmin) {
+          // The admin access code is the gate. Record the grant client-side
+          // keyed to this user id FIRST, so getCurrentUser() surfaces the admin
+          // role for this session even if the database write below is blocked
+          // (e.g. by RLS) — the grant is never silently downgraded to student.
+          localStorage.setItem("nist_admin_grant", data.user.id);
+
+          // Also persist the role to the live backend so admin DB operations
+          // (which are RLS-gated by profiles.role) work and the grant survives
+          // across devices. PostgREST returns { error } instead of throwing, so
+          // capture and log it rather than relying on try/catch.
+          try {
+            const { error: roleErr } = await this.client
+              .from("profiles")
+              .update({ role: "admin" })
+              .eq("id", data.user.id);
+            if (roleErr) {
+              console.error("Failed to persist admin role to Supabase:", roleErr.message);
+            }
+          } catch (err) {
+            console.error("Failed to persist admin role to Supabase:", err);
+          }
+        } else {
+          // Signed in without the admin code: clear any stale local admin grant
+          // so this session is a regular student, and reflect that in the
+          // backend if the profile was previously elevated (the code is the
+          // sole gate, so a code-less login must never inherit a stale admin
+          // role — mirroring the demo-mode behaviour).
+          localStorage.removeItem("nist_admin_grant");
+          try {
+            await this.client
+              .from("profiles")
+              .update({ role: "student" })
+              .eq("id", data.user.id);
+          } catch (err) {
+            console.error("Failed to reset profile role to student:", err);
+          }
         }
       }
       return { data, error };
@@ -473,6 +501,9 @@ class SupabaseService {
       localStorage.removeItem("demo_session");
       return { error: null };
     } else {
+      // Drop the session-scoped admin grant so a later code-less login starts
+      // as a student.
+      localStorage.removeItem("nist_admin_grant");
       const { error } = await this.client.auth.signOut();
       return { error };
     }
@@ -506,10 +537,21 @@ class SupabaseService {
         .eq("id", user.id)
         .single();
 
+      const resolvedProfile = profile || { role: "student", full_name: "Student Member", assigned_content: [] };
+
+      // The admin access code is the sole gate for admin privileges, so the
+      // role is derived from the locally-recorded grant for THIS user — not
+      // from whatever is stored in the profiles table. This guarantees the
+      // admin role shows up reliably after entering the correct code (even if
+      // the backend role write was blocked by RLS), and that a session without
+      // the code is always a student regardless of a stale stored 'admin' role.
+      const adminGrant = localStorage.getItem("nist_admin_grant");
+      resolvedProfile.role = adminGrant === user.id ? "admin" : "student";
+
       return {
         id: user.id,
         email: user.email,
-        profile: profile || { role: "student", full_name: "Student Member", assigned_content: [] }
+        profile: resolvedProfile
       };
     }
   }

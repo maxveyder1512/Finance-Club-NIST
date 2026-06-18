@@ -527,15 +527,41 @@ class SupabaseService {
         profile: profile || session.user.profile || { role: "student", full_name: "Student Member", assigned_content: [] }
       };
     } else {
-      const { data: { user }, error } = await this.client.auth.getUser();
-      if (error || !user) return null;
+      // Prefer getUser() (it validates the token against the auth server), but
+      // never report an authenticated session as logged out. getUser() makes a
+      // network round-trip and can error/race in the burst of requests right
+      // after sign-in; if it does, fall back to the locally-persisted session
+      // (getSession() reads from storage without a network call). Returning
+      // null here trips the route guards and shows "Please sign in...".
+      let user = null;
+      try {
+        const { data, error } = await this.client.auth.getUser();
+        if (!error && data?.user) user = data.user;
+      } catch (err) {
+        console.error("auth.getUser() failed; falling back to stored session:", err);
+      }
 
-      // Fetch user profile from profiles table
-      const { data: profile, error: profileErr } = await this.client
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
+      if (!user) {
+        const { data: { session } } = await this.client.auth.getSession();
+        user = session?.user || null;
+      }
+
+      if (!user) return null;
+
+      // Fetch user profile from profiles table. A missing row (or any lookup
+      // error) must not throw or null out an otherwise-valid session — fall
+      // back to a default profile instead.
+      let profile = null;
+      try {
+        const { data } = await this.client
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        profile = data;
+      } catch (err) {
+        console.error("Failed to load profile; using fallback profile:", err);
+      }
 
       const resolvedProfile = profile || { role: "student", full_name: "Student Member", assigned_content: [] };
 

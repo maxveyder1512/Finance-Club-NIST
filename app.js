@@ -167,7 +167,7 @@ function updateConnectionStatusBadge() {
   
   const html = isDemo
     ? `<span class="status-badge status-demo">⚠️ Demo Mode</span>`
-    : `<span class="status-badge status-live">⚡ Supabase Live</span>`;
+    : `<span class="status-badge status-live">Supabase Live</span>`;
 
   badges.forEach(b => {
     b.innerHTML = html;

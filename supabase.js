@@ -397,7 +397,11 @@ class SupabaseService {
           }
         }
       });
-      return { data, error };
+      // Surface failures (GoTrue returns { error } instead of throwing) so the
+      // caller's try/catch shows the real message rather than a false
+      // "Account created successfully!" toast on a rejected sign-up.
+      if (error) throw error;
+      return { data, error: null };
     }
   }
 
@@ -452,7 +456,16 @@ class SupabaseService {
         password
       });
 
-      if (!error && data?.user) {
+      // Surface real auth failures instead of swallowing them. PostgREST/GoTrue
+      // return { error } rather than throwing, and the caller only awaits this
+      // method (it never inspects the returned error). Without this throw a
+      // FAILED sign-in still falls through to the "Welcome back" toast and a
+      // navigate to #profile, where the guard (correctly, since no session was
+      // created) fires the false "Please sign in..." warning. Demo mode already
+      // throws on bad credentials; mirror that so both paths behave the same.
+      if (error) throw error;
+
+      if (data?.user) {
         if (asAdmin) {
           // The admin access code is the gate. Record the grant client-side
           // keyed to this user id FIRST, so getCurrentUser() surfaces the admin
@@ -527,23 +540,31 @@ class SupabaseService {
         profile: profile || session.user.profile || { role: "student", full_name: "Student Member", assigned_content: [] }
       };
     } else {
-      // Prefer getUser() (it validates the token against the auth server), but
-      // never report an authenticated session as logged out. getUser() makes a
-      // network round-trip and can error/race in the burst of requests right
-      // after sign-in; if it does, fall back to the locally-persisted session
-      // (getSession() reads from storage without a network call). Returning
-      // null here trips the route guards and shows "Please sign in...".
+      // Determine auth state from the LOCALLY-persisted session first.
+      // signInWithPassword sets this session synchronously and getSession()
+      // reads it back without a network round-trip, so it is deterministic
+      // immediately after sign-in. auth.getUser() (a network call) can
+      // error/race in the request burst right after login and momentarily
+      // report a valid session as logged out — which trips the route guards
+      // and shows the false "Please sign in..." warning. So getSession() is the
+      // source of truth for "is there a session"; getUser() is only used as
+      // best-effort server-side validation and must never null out a session
+      // it fails to reach.
       let user = null;
       try {
-        const { data, error } = await this.client.auth.getUser();
-        if (!error && data?.user) user = data.user;
+        const { data: { session } } = await this.client.auth.getSession();
+        user = session?.user || null;
       } catch (err) {
-        console.error("auth.getUser() failed; falling back to stored session:", err);
+        console.error("auth.getSession() failed:", err);
       }
 
       if (!user) {
-        const { data: { session } } = await this.client.auth.getSession();
-        user = session?.user || null;
+        try {
+          const { data, error } = await this.client.auth.getUser();
+          if (!error && data?.user) user = data.user;
+        } catch (err) {
+          console.error("auth.getUser() fallback failed:", err);
+        }
       }
 
       if (!user) return null;

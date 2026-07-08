@@ -52,8 +52,19 @@ async function handleRouting() {
     }
   });
 
-  // Verify auth state for page access
-  currentUser = await window.db.getCurrentUser();
+  // Verify auth state for page access.
+  // A transient null auth read must NOT clobber a session we already hold in
+  // memory. Right after sign-in, navigate("#profile") fires this hashchange
+  // while getSession()/getUser() are still racing the request burst from
+  // signInWithPassword (+ the admin profile-role UPDATE), so this second read
+  // can momentarily return null even though the login handler just set a valid
+  // currentUser — which would falsely trip the #profile guard below. A real
+  // logout sets currentUser = null explicitly, and genuinely logged-out
+  // visitors start with currentUser === null, so keeping the last known user
+  // when the fresh read is null preserves the true logged-out warning while
+  // defeating the race.
+  const freshUser = await window.db.getCurrentUser();
+  currentUser = freshUser || currentUser;
   updateNavbar();
 
   // Route handlers
